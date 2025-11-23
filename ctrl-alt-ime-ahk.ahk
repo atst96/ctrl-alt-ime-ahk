@@ -1,3 +1,20 @@
+#SingleInstance Force
+
+; Explorer（タスクバー）が起動したときのイベントフック
+taskbarMsg := DllCall("RegisterWindowMessage", "Str", "TaskbarCreated")
+OnMessage(taskbarMsg, "OnTaskbarCreated")
+
+OnTaskbarCreated(wParam, lParam, msg, hwnd) {
+    Menu, Tray, Icon
+}
+
+WinWait, ahk_class Shell_TrayWnd,, 30
+if ErrorLevel
+{
+    Process, Wait, explorer.exe, 30
+}
+Sleep, 100
+
 ; 左右 Alt キーの空打ちで IME の OFF/ON を切り替える
 ;
 ; 左 Alt キーの空打ちで IME を「英数」に切り替え
